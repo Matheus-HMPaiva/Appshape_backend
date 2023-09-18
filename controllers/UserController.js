@@ -25,5 +25,34 @@ module.exports = {
     } catch (error) {
       return res.status(500).json({ erro: 'Erro interno do servidor' });
     }
+  },
+  
+  async loginUser(req, res) {
+    try {
+      const { email, senha } = req.body;
+
+      // Verificar se o usuário existe
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(401).json({ erro: 'Credenciais inválidas' });
+      }
+
+      // Verificar a senha
+      const senhaValida = await bcrypt.compare(senha, user.senha);
+      if (!senhaValida) {
+        return res.status(401).json({ erro: 'Credenciais inválidas' });
+      }
+
+      // Gerar token de autenticação
+      const token = jwt.sign({ userId: user._id }, 'segredo-secreto', { expiresIn: '1h' });
+
+      // Armazenar o token no usuário
+      user.token = token;
+      await user.save();
+
+      return res.json({ token });
+    } catch (error) {
+      return res.status(500).json({ erro: 'Erro interno do servidor' });
+    }
   }
 };

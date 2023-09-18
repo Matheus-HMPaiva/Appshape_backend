@@ -3,9 +3,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config');
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors({
+  origin: '*'
+}))
 // Conectar ao MongoDB
 mongoose.connect(config.dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', console.error.bind(console, 'Erro de conexão com o MongoDB:'));
