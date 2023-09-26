@@ -25,6 +25,8 @@ app.use(bodyParser.json());
 const userRoutes = require('./routes/userRoutes');
 app.use('/users', userRoutes);
 
+const imcRoutes = require('./routes/imcRoutes');
+app.use('/imc', imcRoutes)
 // Iniciar o servidor
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
