@@ -1,9 +1,8 @@
-// controllers/UserController.js
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-module.exports = {
+class UserController {
   async createUser(req, res) {
     try {
       const { nome, email, senha } = req.body;
@@ -36,7 +35,7 @@ module.exports = {
     } catch (error) {
       return res.status(500).json({ erro: 'Erro interno do servidor' });
     }
-  },
+  }
 
   async loginUser(req, res) {
     try {
@@ -70,4 +69,6 @@ module.exports = {
       return res.status(500).json({ erro: 'Erro interno do servidor' });
     }
   }
-};
+}
+
+module.exports = new UserController();
